@@ -29,9 +29,7 @@ function draw() {
     }
 }
   
-
-const formInserir = document.getElementById("inserir");
-formInserir.addEventListener("submit", (event) => {
+document.getElementById("inserir").addEventListener("submit", (event) => {
   try {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target).entries());
@@ -54,8 +52,7 @@ formInserir.addEventListener("submit", (event) => {
   }
 });
 
-const formRemover = document.getElementById("remover");
-formRemover.addEventListener('submit', (event) => {
+document.getElementById("remover").addEventListener('submit', (event) => {
   event.preventDefault();
   planes = [];
   dynamicTable.load(planes);
