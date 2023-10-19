@@ -53,3 +53,14 @@ formInserir.addEventListener("submit", (event) => {
     console.log(err)
   }
 });
+
+const formRemover = document.getElementById("remover");
+formRemover.addEventListener('submit', (event) => {
+  event.preventDefault();
+  planes = [];
+  dynamicTable.load(planes);
+});
+
+function onChangeSelecionarAviao(idx) {
+  planes[idx].selected = !planes[idx].selected;
+}
