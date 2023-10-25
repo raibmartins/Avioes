@@ -1,31 +1,18 @@
-class Plane {
+class Aviao {
   constructor(id, x, y, raio, angulo, direcao, velocidade) {
     this.selected = false;
     this.id = id;
-
-    // Coordenadas real do canvas
     this.x = x;
     this.y = y;
-
-    // efeito visual
     this.direcao = direcao;
     this.velocidade = velocidade;
-
-    // coordenadas polares
     this.raio = raio;
     this.angulo = angulo;
-
-    // coordenadas cartesianas
     this.cartesianX = 0;
     this.cartesianY = 0;
-
-    // rotação
     this.rotation = 0;
-
-    // seta as coordenadas cartesianas ou polar
     this.setCoordenadas();
-
-    this.imageAviao = loadImage("../assets/airplane.png");
+    this.imageAviao = loadImage("../assets/aviao.png");
   }
 
   render() {
