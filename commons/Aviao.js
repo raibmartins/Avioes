@@ -49,10 +49,8 @@ class Aviao {
   }
 
   setRaioAnguloByCoordenadaCartesian(x, y) {
-    // Calculo equivalente a linha abaixo: r = √x² + y²
     this.raio = parseFloat(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))) || 0
 
-    // Calculo equivalente a linha abaixo: tag(teta)
     let theta = parseFloat((Math.atan2(y, x) * 180) / Math.PI) || 0;
     if (theta < 0) theta = 360 + theta; // range [0, 360)
 
@@ -77,55 +75,29 @@ class Aviao {
 
     this.cartesianX = cartesianX;
     this.cartesianY = cartesianY;
-
-    // this.setRaioAnguloByCoordenadaCartesian(x, y);
   }
 
-  transformacoes(option, x, y, angulo) {
-    const modos = {
-      TRANSLANDAR: "TRANSLANDAR",
-      ESCALONAR: "ESCALONAR",
-      ROTACIONAR: "ROTACIONAR",
-    };
+  rotacionar(x,y,angulo) {
+    angulo = (Math.PI * 2 * angulo) / 360;
+    const newX = (this.x - x) * Math.cos(angulo) - (this.y - y) * Math.sin(angulo) + x;
+    const newY = (this.x - x) * Math.sin(angulo) + (this.y - y) * Math.cos(angulo) + y;
+    
+    this.x = newX;
+    this.y = newY;
 
-    switch (option) {
-      case modos.TRANSLANDAR:
-        this.x += x;
-        this.y += y;
-        this.direcao += angulo;
-        this.setCoordenadas();
-        break;
-      case modos.ESCALONAR:
-        this.x *= x;
-        this.y *= y;
-        this.setCoordenadas();
-        break;
+    this.setCoordenadas();
+  }
 
-      case modos.ROTACIONAR:
-        let _x = 0;
-        let _y = 0;
+  translandar(x,y) {
+    this.x += x;
+    this.y += y;
+    this.setCoordenadas();
+  }
 
-        this.x = this.x - x;
-        this.y = this.y - y;
-
-        this.setCoordenadas();
-
-        _x = ((this.x * cos(angulo)) - (this.y * sin(angulo)));
-        _y = ((this.y * cos(angulo)) + (this.x * sin(angulo)));
-
-        this.x = _x;
-        this.y = _y;
-
-        this.x = this.x + x;
-        this.y = this.y + y;
-
-        this.setCoordenadas();
-        break;
-
-      default:
-        toastr.warning("Selecione uma das opções disponiveis");
-        break;
-    }
+  escalonar(x, y) {
+    this.x *= x;
+    this.y *= y;
+    this.setCoordenadas();
   }
 
   distanciaParaOAeroporto(distancia) {

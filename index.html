@@ -15,7 +15,7 @@
 </head>
 <body class="container-fluid">
     <div class="row">
-        <div class="col-3">
+        <div class="col-4">
              <div class="card mt-4">
                 <div class="card-body">
                     <h4>Dados</h4>
@@ -103,14 +103,14 @@
                     </form>
                     <hr>
                     <h4>Funções de transformação</h4>
-                    <form id="transformacao">
+                    <form id="translandar">
                         <div class="form-row">
                             <div class="col">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default">X</span>
                                     </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="x" name="x"
+                                    <input class="form-control"  step="any" placeholder="X" type="number" id="xTrans" name="x"
                                         min="-300" max="300" value="0" >
                                 </div>
                             </div>
@@ -119,25 +119,27 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
                                     </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="y" name="y"
+                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="yTrans" name="y"
                                         min="-300" max="300" value="0" >
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col">
-                                <button type="submit" id="inserir"
+                                <button type="submit" id="btnTranslandar"
                                 class="btn btn-info btn-block">Translandar</button>
                             </div>
                         </div>
-                        <br>
+                    </form>
+                    <br>
+                    <form id="escalonar">
                         <div class="form-row">
                             <div class="col">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default">X</span>
                                     </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="x" name="x"
+                                    <input class="form-control"  step="any" placeholder="X" type="number" id="xEsc" name="x"
                                         min="-300" max="300" value="0" >
                                 </div>
                             </div>
@@ -146,26 +148,28 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
                                     </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="y" name="y"
+                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="yEsc" name="y"
                                         min="-300" max="300" value="0" >
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col">
-                                <button type="submit" id="inserir"
+                                <button type="submit" id="btnEscalonar"
                                 class="btn btn-info btn-block">Escalonar</button>
                             </div>
                         </div>
-                        <br>
+                    </form>
+                    <br>
+                    <form id="rotacionar">
                         <div class="form-row">
                             <div class="col">
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default">Ângulo</span>
                                     </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="y" name="y"
-                                        min="-300" max="300" value="0" >
+                                    <input class="form-control"  step="any" placeholder="Ângulo" type="number" id="anguloRotacionar" name="angulo"
+                                        min="-300" max="360" value="0" >
                                 </div>
                             </div>
                             <div class="col">
@@ -173,7 +177,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default">X</span>
                                     </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="x" name="x"
+                                    <input class="form-control"  step="any" placeholder="X" type="number" id="xRotacionar" name="x"
                                         min="-300" max="300" value="0" >
                                 </div>
                             </div>
@@ -182,15 +186,14 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
                                     </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="y" name="y"
+                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="yRotacionar" name="y"
                                         min="-300" max="300" value="0" >
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col">
-                                <button type="submit" id="inserir"
-                                class="btn btn-info btn-block">Rotacionar</button>
+                                <button type="submit" id="btnRotacionar" class="btn btn-info btn-block">Rotacionar</button>
                             </div>
                         </div>
                     </form>

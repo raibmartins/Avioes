@@ -1,8 +1,8 @@
-let planes = [];
+let avioes = [];
 let widthCanvas = 600;
 let heightCanvas = 600;
+var TOTAL = 0;
 
-// Iniciando table
 const dynamicTable = new DynamicTable(
   "data-table",
   ["selected", "id", "x", "y", "raio", "angulo", "direcao", "velocidade"],
@@ -18,8 +18,9 @@ function setup() {
   
     angleMode(DEGREES);
   
-    dynamicTable.load(planes);
+    dynamicTable.load(avioes);
     selectModoInsercao();
+    disabilitaAcoes();
 }
 
 function selectModoInsercao() {
@@ -49,8 +50,8 @@ function selectModoInsercao() {
 function draw() {
     background(backgroundImage);
   
-    for (i = 0; i < planes.length; i++) {
-      planes[i].render();
+    for (i = 0; i < avioes.length; i++) {
+      avioes[i].render();
     }
 }
   
@@ -59,9 +60,9 @@ document.getElementById("inserir").addEventListener("submit", (event) => {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target).entries());
     console.log(data)
-    planes.push(
+    avioes.push(
       new Aviao(
-        0,
+        TOTAL,
         parseFloat(data.x),
         parseFloat(data.y),
         parseFloat(data.raio),
@@ -70,7 +71,8 @@ document.getElementById("inserir").addEventListener("submit", (event) => {
         parseFloat(data.velocidade)
       )
     );
-    dynamicTable.load(planes);
+    TOTAL++;
+    dynamicTable.load(avioes);
 
   } catch (err) {
     console.log(err)
@@ -79,10 +81,72 @@ document.getElementById("inserir").addEventListener("submit", (event) => {
 
 document.getElementById("remover").addEventListener('submit', (event) => {
   event.preventDefault();
-  planes = [];
-  dynamicTable.load(planes);
+  avioes = [];
+  dynamicTable.load(avioes);
+  TOTAL = 0;
+  disabilitaAcoes();
 });
 
 function onChangeSelecionarAviao(idx) {
-  planes[idx].selected = !planes[idx].selected;
+  avioes[idx].selected = !avioes[idx].selected;
+  disabilitaAcoes();
 }
+
+function disabilitaAcoes() {
+  let totalSelecionados = avioes.filter(plane => plane.selected).length;
+  if (totalSelecionados > 0) {
+    document.getElementById('btnTranslandar').disabled = false;
+    document.getElementById('btnEscalonar').disabled = false;
+    document.getElementById('btnRotacionar').disabled = false;
+  } else {
+    document.getElementById('btnRotacionar').disabled = true;
+    document.getElementById('btnTranslandar').disabled = true;
+    document.getElementById('btnEscalonar').disabled = true;
+  }
+}
+
+document.getElementById('rotacionar').addEventListener('submit', (event) => {
+  event.preventDefault();
+  
+  avioes.forEach(plane => {
+    if (plane.selected) {
+      let angulo = document.getElementById('anguloRotacionar').value;
+      let x = document.getElementById('xRotacionar').value;
+      let y = document.getElementById('yRotacionar').value;
+      if (angulo != null && x != null && y != null) {
+        plane.rotacionar(parseFloat(x),parseFloat(y),parseFloat(angulo));
+      }
+    }
+  });
+  dynamicTable.load(avioes);
+});
+
+document.getElementById('translandar').addEventListener('submit', (event) => {
+  event.preventDefault();
+  
+  avioes.forEach(plane => {
+    if (plane.selected) {
+      let x = document.getElementById('xTrans').value;
+      let y = document.getElementById('yTrans').value;
+      if (x != null && y != null) {
+        plane.translandar(parseFloat(x),parseFloat(y));
+      }
+    }
+  });
+  dynamicTable.load(avioes);
+});
+
+document.getElementById('escalonar').addEventListener('submit', (event) => {
+  event.preventDefault();
+  
+  avioes.forEach(plane => {
+    if (plane.selected) {
+      let x = document.getElementById('xEsc').value;
+      let y = document.getElementById('yEsc').value;
+      if (x != null && y != null) {
+        plane.escalonar(parseFloat(x),parseFloat(y));
+      }
+    }
+  });
+  dynamicTable.load(avioes);
+});
