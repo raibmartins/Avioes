@@ -1,5 +1,6 @@
 class Aviao {
   constructor(id, x, y, raio, angulo, direcao, velocidade) {
+    console.log(id, x, y, raio, angulo, direcao, velocidade)
     this.selected = false;
     this.id = id;
     this.x = x;

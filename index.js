@@ -6,7 +6,7 @@ var TOTAL = 0;
 const dynamicTable = new DynamicTable(
   "data-table",
   ["selected", "id", "x", "y", "raio", "angulo", "direcao", "velocidade"],
-  ["Selecionado", "Id", "X", "Y", "Raio", "Angulo", "Direção", "Velocidade"]
+  ["", "Id", "X", "Y", "Raio", "Angulo", "Direção", "Velocidade"]
 );
 
 function setup() {
@@ -59,14 +59,13 @@ document.getElementById("inserir").addEventListener("submit", (event) => {
   try {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target).entries());
-    console.log(data)
     avioes.push(
       new Aviao(
         TOTAL,
-        parseFloat(data.x),
-        parseFloat(data.y),
-        parseFloat(data.raio),
-        parseFloat(data.angulo),
+        parseFloat(data.x) || 0,
+        parseFloat(data.y) || 0,
+        parseFloat(data.raio)  || 0,
+        parseFloat(data.angulo) || 0,
         parseFloat(data.direcao),
         parseFloat(data.velocidade)
       )
