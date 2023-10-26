@@ -1,6 +1,5 @@
 class Aviao {
   constructor(id, x, y, raio, angulo, direcao, velocidade) {
-    console.log(id, x, y, raio, angulo, direcao, velocidade)
     this.selected = false;
     this.id = id;
     this.x = x;
@@ -26,10 +25,6 @@ class Aviao {
     image(this.imageAviao, -20, -20);
     rect(0, 0, 40, 40);
     pop();
-  }
-
-  setRotation(a) {
-    this.direcao = a;
   }
 
   setCoordenadas() {
