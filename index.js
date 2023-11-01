@@ -1,151 +1,231 @@
-let avioes = [];
-let widthCanvas = 600;
-let heightCanvas = 600;
-var TOTAL = 0;
+let planes = [];
+let PLANE_ID = 1;
+let widthCanvas = 750;
+let heightCanvas = 750;
 
-const dynamicTable = new DynamicTable(
+const table = new DynamicTable(
   "data-table",
   ["selected", "id", "x", "y", "raio", "angulo", "direcao", "velocidade"],
-  ["", "Id", "X", "Y", "Raio", "Angulo", "Direção", "Velocidade"]
+  [" ", "Avião", "X", "Y", "Raio", "Ângulo", "Direção", "Velocidade"]
 );
 
+toastr.options = {
+  closeButton: true,
+  debug: false,
+  newestOnTop: true,
+  progressBar: false,
+  preventDuplicates: true,
+  onclick: null,
+  showDuration: "300",
+  hideDuration: "1000",
+  timeOut: "1000",
+};
+
 function setup() {
-    const canvas = createCanvas(widthCanvas, heightCanvas);
-    canvas.parent("sketch-holder");
-  
-    var imagePath = "/assets/grafico.png";
-    backgroundImage = loadImage(imagePath);
-  
-    angleMode(DEGREES);
-  
-    dynamicTable.load(avioes);
-    selectModoInsercao();
-    disabilitaAcoes();
-}
+  const canvas = createCanvas(widthCanvas, heightCanvas);
+  canvas.parent("sketch-holder");
 
-function selectModoInsercao() {
-  let selected = document.getElementById('select').value
-  switch (parseInt(selected)) {
-    case 1:
-      document.getElementById('y').disabled = false;
-      document.getElementById('x').disabled = false;
-      document.getElementById('raio').disabled = true;
-      document.getElementById('angulo').disabled = true;
+  const imagePath = "/assets/grafico.png";
+  backgroundImage = loadImage(imagePath);
 
-      document.getElementById('raio').value = 0;
-      document.getElementById('angulo').value = 0;
-      break;
-    case 2:
-      console.log(document.getElementById('y'))
-      document.getElementById('y').disabled = true;
-      document.getElementById('x').disabled = true;
-      document.getElementById('raio').disabled = false;
-      document.getElementById('angulo').disabled = false;
+  angleMode(DEGREES);
 
-      document.getElementById('y').value = 0;
-      document.getElementById('x').value = 0;
-  }
+  table.load(planes);
+  disabledButtonsTranforms();
 }
 
 function draw() {
-    background(backgroundImage);
-  
-    for (i = 0; i < avioes.length; i++) {
-      avioes[i].render();
-    }
+
+  background(backgroundImage);
+
+  for (i = 0; i < planes.length; i++) {
+    planes[i].render();
+  }
+
 }
-  
-document.getElementById("inserir").addEventListener("submit", (event) => {
+
+function selectionPlane(idx) {
+
+  planes.forEach(plane => {
+    if (plane.id === idx) {
+      plane.selected = !plane.selected;
+    }
+  })
+
+  disabledButtonsTranforms();
+}
+
+
+function disabledButtonsTranforms() {
+  const buttonTranslate = $('#btnTranslandar').prop('disabled', true),
+    buttonScale = $('#btnEscalonar').prop('disabled', true),
+    buttonRotate = $('#btnRotacionar').prop('disabled', true);
+
+  let xTrans = $('#xTrans');
+
+  let totalSelecionados = planes.filter(plane => plane.selected).length;
+
+  if (totalSelecionados > 0) {
+    buttonTranslate.prop('disabled', false);
+    buttonScale.prop('disabled', false);
+    buttonRotate.prop('disabled', false);
+  } else {
+    xTrans.val(0);
+  }
+}
+
+//Dados
+$('#select').on('change', function () {
+  const selected = $('#select').val(),
+    x = $('#x'),
+    y = $('#y'),
+    raio = $('#raio'),
+    angulo = $('#angulo');
+
+  switch (selected) {
+    case '1':
+      x.prop('disabled', false);
+      y.prop('disabled', false);
+      raio.prop('disabled', true);
+      angulo.prop('disabled', true);
+
+      raio.val(0);
+      angulo.val(0);
+      break;
+    case '2':
+      y.prop('disabled', true);
+      x.prop('disabled', true);
+      raio.prop('disabled', false);
+      angulo.prop('disabled', false);
+
+      y.val(0);
+      x.val(0);
+      break;
+    case "3":
+      y.prop('disabled', true);
+      x.prop('disabled', true);
+      raio.prop('disabled', true);
+      angulo.prop('disabled', true);
+  }
+});
+
+
+$("#inserir").submit(function (event) {
+
   try {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target).entries());
-    avioes.push(
-      new Aviao(
-        TOTAL,
-        parseFloat(data.x) || 0,
-        parseFloat(data.y) || 0,
-        parseFloat(data.raio)  || 0,
-        parseFloat(data.angulo) || 0,
-        parseFloat(data.direcao),
-        parseFloat(data.velocidade)
-      )
-    );
-    TOTAL++;
-    dynamicTable.load(avioes);
 
-  } catch (err) {
-    console.log(err)
-  }
-});
-
-document.getElementById("remover").addEventListener('submit', (event) => {
-  event.preventDefault();
-  avioes = [];
-  dynamicTable.load(avioes);
-  TOTAL = 0;
-  disabilitaAcoes();
-});
-
-function onChangeSelecionarAviao(idx) {
-  avioes[idx].selected = !avioes[idx].selected;
-  disabilitaAcoes();
-}
-
-function disabilitaAcoes() {
-  let totalSelecionados = avioes.filter(plane => plane.selected).length;
-  if (totalSelecionados > 0) {
-    document.getElementById('btnTranslandar').disabled = false;
-    document.getElementById('btnEscalonar').disabled = false;
-    document.getElementById('btnRotacionar').disabled = false;
-  } else {
-    document.getElementById('btnRotacionar').disabled = true;
-    document.getElementById('btnTranslandar').disabled = true;
-    document.getElementById('btnEscalonar').disabled = true;
-  }
-}
-
-document.getElementById('rotacionar').addEventListener('submit', (event) => {
-  event.preventDefault();
-  
-  avioes.forEach(plane => {
-    if (plane.selected) {
-      let angulo = document.getElementById('anguloRotacionar').value;
-      let x = document.getElementById('xRotacionar').value;
-      let y = document.getElementById('yRotacionar').value;
-      if (angulo != null && x != null && y != null) {
-        plane.rotacionar(parseFloat(x),parseFloat(y),parseFloat(angulo));
-      }
+    if (PLANE_ID <= 10) {
+      planes.push(
+        new Aviao(
+          PLANE_ID,
+          parseFloat(data.x) || 0,
+          parseFloat(data.y) || 0,
+          parseFloat(data.raio) || 0,
+          parseFloat(data.angulo) || 0,
+          parseFloat(data.direcao) || 0,
+          parseFloat(data.velocidade) || 0,
+          false,
+        )
+      );
+      PLANE_ID++;
     }
-  });
-  dynamicTable.load(avioes);
+
+    table.load(planes);
+
+    toastr.success("Avião inserido com sucesso!");
+
+  } catch (err) { toastr.error("Erro ao inserir avião!"); }
 });
 
-document.getElementById('translandar').addEventListener('submit', (event) => {
-  event.preventDefault();
-  
-  avioes.forEach(plane => {
-    if (plane.selected) {
-      let x = document.getElementById('xTrans').value;
-      let y = document.getElementById('yTrans').value;
-      if (x != null && y != null) {
-        plane.translandar(parseFloat(x),parseFloat(y));
-      }
-    }
-  });
-  dynamicTable.load(avioes);
+
+$("#btnRemover").click(function (event) {
+
+  planes = [];
+  PLANE_ID = 0;
+  table.load(planes);
+
 });
 
-document.getElementById('escalonar').addEventListener('submit', (event) => {
+
+$('#rotacionar').submit(function (event) {
   event.preventDefault();
-  
-  avioes.forEach(plane => {
-    if (plane.selected) {
-      let x = document.getElementById('xEsc').value;
-      let y = document.getElementById('yEsc').value;
-      if (x != null && y != null) {
-        plane.escalonar(parseFloat(x),parseFloat(y));
+
+  try {
+    planes.forEach(plane => {
+
+      if (plane.selected) {
+        let angulo = $('#anguloRotacionar').val();
+        let x = $('#xRotacionar').val();
+        let y = $('#yRotacionar').val();
+
+        if (!isNaN(angulo) && !isNaN(x) && !isNaN(y)) {
+          plane.rotacionar(
+            parseFloat(x),
+            parseFloat(y),
+            parseFloat(angulo)
+          );
+        }
       }
-    }
-  });
-  dynamicTable.load(avioes);
+    });
+
+    table.load(planes);
+    toastr.success("Rotação realizada com sucesso!");
+
+  } catch (error) { toastr.error("Erro ao aplicar rotação!"); }
+});
+
+
+$('#translandar').submit(function (event) {
+  event.preventDefault();
+  try {
+    planes.forEach(plane => {
+
+      if (plane.selected) {
+        let x = $('#xTrans').val();
+        let y = $('#yTrans').val();
+
+        console.log(x, y);
+
+        if (!isNaN(x) && !isNaN(y)) {
+          plane.translandar(
+            parseFloat(x),
+            parseFloat(y)
+          );
+        }
+      }
+
+    });
+
+    table.load(planes);
+    toastr.success("Translação realizada com sucesso!");
+
+  } catch (error) { toastr.error("Erro ao aplicar translação!"); }
+});
+
+$('#escalonar').submit(function (event) {
+  event.preventDefault();
+
+  try {
+    planes.forEach(plane => {
+
+      if (plane.selected) {
+        let x = $('#xEsc').val();
+        let y = $('#yEsc').val();
+
+        if (!isNaN(x) && !isNaN(y)) {
+          plane.escalonar(
+            parseFloat(x),
+            parseFloat(y)
+          );
+        }
+      }
+
+    });
+
+    table.load(planes);
+    toastr.success("Escalonamento realizado com sucesso!");
+
+  } catch (error) { toastr.error("Erro ao aplicar escalonamento!"); }
 });

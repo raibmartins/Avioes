@@ -1,294 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Radar de aviões</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="index.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="index.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
-</head>
-<body class="container-fluid">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"
+      integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css"
+      integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body class="container-fluid">
     <div class="row">
-        <div class="col-4">
-             <div class="card mt-4">
-                <div class="card-body">
-                    <h4>Dados</h4>
-                    <form id="inserir">
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="mb-2">
-                                    <select id="select" class="form-control" aria-label="Default select example" onchange="selectModoInsercao()">
-                                        <option value="1">CARTESIANO</option>
-                                        <option value="2">POLAR</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">X</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="x" name="x"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="y" name="y"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"
-                                            id="inputGroup-sizing-default">Raio</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Raio" type="number" id="raio"
-                                        name="raio" min="0" max="300" value="0" >
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"
-                                            id="inputGroup-sizing-default">Ângulo</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Angulo" type="number" id="angulo"
-                                        name="angulo" min="-360" max="360" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"
-                                            id="inputGroup-sizing-default">Direção</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Direção" type="number" id="direcao"
-                                        name="direcao" min="-360" max="360" value="0" >
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"
-                                            id="inputGroup-sizing-default">Velocidade</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Velocidade" type="number"
-                                        id="velocidade" name="velocidade" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="submit" id="inserir"
-                                class="btn btn-warning btn-block">Inserir</button>
-                            </div>
-                        </div>
-                    </form>
-                    <hr>
-                    <h4>Funções de transformação</h4>
-                    <form id="translandar">
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">X</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="xTrans" name="x"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="yTrans" name="y"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="submit" id="btnTranslandar"
-                                class="btn btn-info btn-block">Translandar</button>
-                            </div>
-                        </div>
-                    </form>
-                    <br>
-                    <form id="escalonar">
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">X</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="xEsc" name="x"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="yEsc" name="y"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="submit" id="btnEscalonar"
-                                class="btn btn-info btn-block">Escalonar</button>
-                            </div>
-                        </div>
-                    </form>
-                    <br>
-                    <form id="rotacionar">
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Ângulo</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Ângulo" type="number" id="anguloRotacionar" name="anguloRotacionar"
-                                        min="-300" max="360" value="0" >
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">X</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="xRotacionar" name="x"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="Y" type="number" id="yRotacionar" name="y"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="submit" id="btnRotacionar" class="btn btn-info btn-block">Rotacionar</button>
-                            </div>
-                        </div>
-                    </form>
-                    <hr>
-                    <h4>Funções de Rastreamento</h4>
-                    <form id="rastreamento">
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="x" name="x"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="submit" id="inserir"
-                                class="btn btn-danger btn-block">Aviões próximos ao aeroporto</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="x" name="x"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="submit" id="inserir"
-                                class="btn btn-danger btn-block">Aviões próximos</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-row">
-                            <div class="col">
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
-                                    </div>
-                                    <input class="form-control"  step="any" placeholder="X" type="number" id="x" name="x"
-                                        min="-300" max="300" value="0" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col">
-                                <button type="submit" id="inserir"
-                                class="btn btn-danger btn-block">Em rota de colisão</button>
-                            </div>
-                        </div>
-                        <br>
-                    </form>
+      <div class="col-3">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 style="text-align: center">Entrada de Dados</h5>
+            <form id="inserir">
+              <div class="form-row">
+                <div class="col">
+                  <div class="mb-2">
+                    <select id="select" class="form-control" aria-label="Default select example">
+                      <option value="3">Selecione uma opção</option>
+                      <option value="1">CARTESIANO</option>
+                      <option value="2">POLAR</option>
+                    </select>
+                  </div>
                 </div>
-            </div>
-        </div>
-        <!-- RADAR -->
-        <div id="sketch-holder" class="col-4 mt-4">
-        </div>
-        <div class="col-4">
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h4>Aviões</h4>
-                    <table id="data-table" class="table"></table>
-                    <form id="remover">
-                        <button type="submit" id="inserir" class="btn btn-danger btn-block">Excluir aviões</button>
-                    </form>
-                    <h4>Relatório</h4>
-                    <textarea name="resultados-colisao" id="resultados-colisao" cols="70"
-                            rows="10" readonly></textarea>
+              </div>
+              <div class="form-row">
+                <div class="col-6">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">X</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="X" type="number" id="x" name="x" min="-300" max="300" value="0" disabled />
+                  </div>
                 </div>
-            </div>
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Y" type="number" id="y" name="y" min="-300" max="300" value="0" disabled />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Raio</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Raio" type="number" id="raio" name="raio" min="0" max="300" value="0" disabled />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Ângulo</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Angulo" type="number" id="angulo" name="angulo" min="-360" max="360" value="0" disabled />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Direção</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Direção" type="number" id="direcao" name="direcao" min="-360" max="360" value="0" />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Velocidade</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Velocidade" type="number" id="velocidade" name="velocidade" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div style="display: flex; justify-content: center" class="col">
+                  <button style="width: 40%" type="submit" id="inserir" class="btn btn-warning btn-block">Inserir</button>
+                </div>
+              </div>
+            </form>
+            <hr />
+            <h5 style="text-align: center">Funções de Tranformações</h5>
+            <form id="translandar">
+              <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">X</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="X" type="number" id="xTrans" name="x" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Y" type="number" id="yTrans" name="y" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div style="display: flex; justify-content: center" class="col">
+                  <button style="width: 40%" type="submit" id="btnTranslandar" class="btn btn-info btn-block">Translandar</button>
+                </div>
+              </div>
+            </form>
+            <br />
+            <form id="escalonar">
+              <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">X</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="X" type="number" id="xEsc" name="x" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Y" type="number" id="yEsc" name="y" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div style="display: flex; justify-content: center" class="col">
+                  <button style="width: 40%" type="submit" id="btnEscalonar" class="btn btn-info btn-block">Escalonar</button>
+                </div>
+              </div>
+            </form>
+            <br />
+            <form id="rotacionar">
+              <div class="form-row">
+                <div class="col-5">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Ângulo</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Ângulo" type="number" id="anguloRotacionar" name="anguloRotacionar" min="-300" max="360" value="0" required />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">X</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="X" type="number" id="xRotacionar" name="x" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Y</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="Y" type="number" id="yRotacionar" name="y" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div style="display: flex; justify-content: center" class="col">
+                  <button style="width: 40%" type="submit" id="btnRotacionar" class="btn btn-info btn-block">Rotacionar</button>
+                </div>
+              </div>
+            </form>
+            <hr />
+            <h5 style="text-align: center">Funções de Rastreamento</h5>
+            <form id="rastreamento">
+              <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="X" type="number" id="x" name="x" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div style="display: flex; justify-content: center" class="col">
+                  <button style="width: 60%" type="submit" id="inserir" class="btn btn-danger btn-block">Aviões próximos ao aeroporto</button>
+                </div>
+              </div>
+              <br />
+              <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="X" type="number" id="x" name="x" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div style="display: flex; justify-content: center" class="col">
+                  <button style="width: 60%" type="submit" id="inserir" class="btn btn-danger btn-block">Aviões próximos</button>
+                </div>
+              </div>
+              <br />
+              <div class="form-row">
+                <div class="col">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
+                    </div>
+                    <input class="form-control" step="any" placeholder="X" type="number" id="x" name="x" min="-300" max="300" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div style="display: flex; justify-content: center" class="col">
+                  <button style="width: 60%" type="submit" id="inserir" class="btn btn-danger btn-block">Em rota de colisão</button>
+                </div>
+              </div>
+              <br />
+            </form>
+          </div>
         </div>
+      </div>
 
+      <div id="sketch-holder" class="col-5 mt-4 text-center"></div>
+      <div class="col-4">
+        <div class="card mt-4" style="max-width: 700px; max-height: 1050px">
+          <div class="card-body" style="max-width: 700px">
+            <h5 style="text-align: center">Aviões</h5>
+            <table id="data-table" class="table" style="text-align: center"></table>
+            <form id="remover">
+              <button id="btnRemover" type="submit" id="inserir" class="btn btn-danger btn-block">Excluir aviões</button>
+            </form>
+
+            <div style="margin-top: 20px">
+              <h5 style="text-align: center">Relatório</h5>
+              <textarea name="resultados-colisao" id="resultados-colisao" cols="74" rows="10" readonly style="max-height: 340px"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
 
     <script src="/commons/Tabela.js"></script>
     <script src="/commons/Aviao.js"></script>
     <script src="index.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
-</body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

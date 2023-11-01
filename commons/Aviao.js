@@ -27,6 +27,16 @@ class Aviao {
     pop();
   }
 
+  setCanvasCartesianPoint(x, y) {
+    var midWidth = width / 2;
+    var midHeight = height / 2;
+    var cartesianX = midWidth + x;
+    var cartesianY = midHeight - y;
+
+    this.cartesianX = cartesianX;
+    this.cartesianY = cartesianY;
+  }
+
   setCoordenadas() {
     switch (true) {
       case this.x !== 0 || this.y !== 0:
@@ -44,11 +54,12 @@ class Aviao {
     }
   }
 
+  //calculos cartesiano x polar
   setRaioAnguloByCoordenadaCartesian(x, y) {
     this.raio = parseFloat(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))) || 0
 
     let theta = parseFloat((Math.atan2(y, x) * 180) / Math.PI) || 0;
-    if (theta < 0) theta = 360 + theta; // range [0, 360)
+    if (theta < 0) theta = 360 + theta;
 
     this.angulo = theta;
   }
@@ -56,70 +67,37 @@ class Aviao {
   setXYByCoordenadaPolar(raio, angulo) {
     let x = raio * cos(angulo);
     let y = raio * sin(angulo);
-    
+
     this.x = parseFloat(x.toFixed(4));
     this.y = parseFloat(y.toFixed(4));
 
     this.setCanvasCartesianPoint(this.x, this.y);
   }
-  
-  setCanvasCartesianPoint(x, y) {
-    var midWidth = width / 2;
-    var midHeight = height / 2;
-    var cartesianX = midWidth + x;
-    var cartesianY = midHeight - y;
 
-    this.cartesianX = cartesianX;
-    this.cartesianY = cartesianY;
-  }
-
-  rotacionar(x,y,angulo) {
+  //Funções de tranformações
+  rotacionar(x, y, angulo) {
     angulo = (Math.PI * 2 * angulo) / 360;
     const newX = (this.x - x) * Math.cos(angulo) - (this.y - y) * Math.sin(angulo) + x;
     const newY = (this.x - x) * Math.sin(angulo) + (this.y - y) * Math.cos(angulo) + y;
-    
+
     this.x = newX;
     this.y = newY;
 
     this.setCoordenadas();
   }
 
-  translandar(x,y) {
+  translandar(x, y) {
     this.x += x;
     this.y += y;
+
     this.setCoordenadas();
   }
 
   escalonar(x, y) {
     this.x *= x;
     this.y *= y;
+
     this.setCoordenadas();
   }
 
-  distanciaParaOAeroporto(distancia) {
-    let distanciaAeroporto = dist(this.x, this.y, 0, 0);
-    if (distanciaAeroporto <= distancia) {
-      return `Calculo Distancia Aeroporto: ID:${this.id}, X: ${this.x}, Y:${
-        this.y
-      }, Distancia: ${distanciaAeroporto.toFixed(4)} \n`;
-    }
-    return "";
-  }
-
-  distanciaParaOutroAviao(planeToCompare, distancia) {
-    let distanciaEntreAvioes = dist(
-      this.x,
-      this.y,
-      planeToCompare.x,
-      planeToCompare.y
-    );
-    if (distanciaEntreAvioes <= distancia) {
-      return `Calculo Distancia Entre Aviões: Distancia entre o Avião: ${
-        this.id
-      } para o Avião: ${planeToCompare.id} é: ${distanciaEntreAvioes.toFixed(
-        4
-      )} \n`;
-    }
-    return "";
-  }
 }
