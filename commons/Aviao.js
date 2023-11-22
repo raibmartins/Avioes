@@ -100,4 +100,30 @@ class Aviao {
     this.setCoordenadas();
   }
 
+  distanciaParaOAeroporto(distancia) {
+    let distanciaAeroporto = dist(this.x, this.y, 0, 0);
+    if (distanciaAeroporto <= distancia) {
+      return `Calculo Distancia Aeroporto: ID:${this.id}, X: ${this.x}, Y:${
+        this.y
+      }, Distancia: ${distanciaAeroporto.toFixed(4)} \n`;
+    }
+    return "";
+  }
+
+  distanciaParaOutroAviao(aviaoParaComparar, distancia) {
+    let distanciaEntreAvioes = dist(
+      this.x,
+      this.y,
+      aviaoParaComparar.x,
+      aviaoParaComparar.y
+    );
+    if (distanciaEntreAvioes <= distancia) {
+      return `Distancia entre o Avião: ${
+        this.id
+      } para o Avião: ${aviaoParaComparar.id} é: ${distanciaEntreAvioes.toFixed(
+        4
+      )} \n`;
+    }
+    return "";
+  }
 }

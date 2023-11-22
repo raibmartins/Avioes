@@ -195,46 +195,50 @@
             </form>
             <hr />
             <h5 style="text-align: center">Funções de Rastreamento</h5>
-            <form id="rastreamento">
+            <form id="rastreamento-aeroporto">
               <div class="form-row">
                 <div class="col">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
                     </div>
-                    <input class="form-control" step="any" placeholder="X" type="number" id="x" name="x" min="-300" max="300" value="0" />
+                    <input class="form-control" step="any" placeholder="Distância minima" type="number" name="distanciaMinima" min="-300" max="300" value="0" />
                   </div>
                 </div>
               </div>
               <div class="form-row">
                 <div style="display: flex; justify-content: center" class="col">
-                  <button style="width: 60%" type="submit" id="inserir" class="btn btn-danger btn-block">Aviões próximos ao aeroporto</button>
+                  <button style="width: 60%" type="submit" id="btn-avioes-proximos-aeroporto" class="btn btn-danger btn-block">Aviões próximos ao aeroporto</button>
                 </div>
               </div>
-              <br />
+            </form>
+            <br />
+            <form id="rastreamento-proximos">
               <div class="form-row">
                 <div class="col">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
                     </div>
-                    <input class="form-control" step="any" placeholder="X" type="number" id="x" name="x" min="-300" max="300" value="0" />
+                    <input class="form-control" step="any" placeholder="Distância minima" type="number" id="distanciaMinima" name="distanciaMinima" min="-300" max="300" value="0" />
                   </div>
                 </div>
               </div>
               <div class="form-row">
                 <div style="display: flex; justify-content: center" class="col">
-                  <button style="width: 60%" type="submit" id="inserir" class="btn btn-danger btn-block">Aviões próximos</button>
+                  <button style="width: 60%" type="submit" id="btn-avioes-proximos" class="btn btn-danger btn-block">Aviões próximos</button>
                 </div>
               </div>
-              <br />
+            </form>
+            <br />
+            <form id="rastreamento-colisao">
               <div class="form-row">
                 <div class="col">
                   <div class="input-group mb-2">
                     <div class="input-group-prepend">
-                      <span class="input-group-text" id="inputGroup-sizing-default">Distância minima</span>
+                      <span class="input-group-text" id="inputGroup-sizing-default">Tempo minimo</span>
                     </div>
-                    <input class="form-control" step="any" placeholder="X" type="number" id="x" name="x" min="-300" max="300" value="0" />
+                    <input class="form-control" step="any" placeholder="Tempo minimo" type="number" id="tempoMinimo" name="tempoMinimo" min="-300" max="300" value="0" />
                   </div>
                 </div>
               </div>
@@ -256,7 +260,7 @@
             <h5 style="text-align: center">Aviões</h5>
             <table id="data-table" class="table" style="text-align: center"></table>
             <form id="remover">
-              <button id="btnRemover" type="submit" id="inserir" class="btn btn-danger btn-block">Excluir aviões</button>
+              <button id="btnRemover" type="submit" class="btn btn-danger btn-block">Excluir aviões</button>
             </form>
 
             <div style="margin-top: 20px">
@@ -270,6 +274,7 @@
 
     <script src="/commons/Tabela.js"></script>
     <script src="/commons/Aviao.js"></script>
+    <script src="/commons/Utils.js"></script>
     <script src="index.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script

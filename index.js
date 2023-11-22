@@ -2,7 +2,7 @@ let planes = [];
 let PLANE_ID = 1;
 let widthCanvas = 750;
 let heightCanvas = 750;
-
+const RELATORIO = document.getElementById("resultados-colisao");
 const table = new DynamicTable(
   "data-table",
   ["selected", "id", "x", "y", "raio", "angulo", "direcao", "velocidade"],
@@ -12,6 +12,7 @@ const table = new DynamicTable(
 toastr.options = {
   closeButton: true,
   debug: false,
+  positionClass: "toast-bottom-right",
   newestOnTop: true,
   progressBar: false,
   preventDuplicates: true,
@@ -142,6 +143,7 @@ $("#inserir").submit(function (event) {
 
 $("#btnRemover").click(function (event) {
 
+  event.preventDefault();
   planes = [];
   PLANE_ID = 0;
   table.load(planes);
@@ -228,4 +230,69 @@ $('#escalonar').submit(function (event) {
     toastr.success("Escalonamento realizado com sucesso!");
 
   } catch (error) { toastr.error("Erro ao aplicar escalonamento!"); }
+});
+
+
+$('#rastreamento-aeroporto').submit((event) => {
+  try {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target).entries());
+    let resultCalculoDistancia = "";
+    RELATORIO.innerText = "";
+
+    for (let index = 0; index < planes.length; index++) {
+      resultCalculoDistancia += planes[index].distanciaParaOAeroporto(
+        parseFloat(data.distanciaMinima)
+      );
+    }
+
+    resultCalculoDistancia ? (RELATORIO.append(resultCalculoDistancia)) : (RELATORIO.innerText = `Sem aviões próximos ao Aeroporto, Distancia Informada: ${data.distanciaMinima}`);
+
+    toastr.success("Calculado distancia entre aviões e aeroporto");
+  } catch (err) {
+    toastr.error("Erro ao calcular distancia entre aviões e aeroporto");
+  }
+});
+
+$('#rastreamento-proximos').submit((event) => {
+  try {
+    event.preventDefault();
+
+    const data = Object.fromEntries(new FormData(event.target).entries());
+    
+    RELATORIO.innerText = "";
+    
+    let resultCalculoDistancia = "";
+
+    for (i = 0; i < planes.length; i++) {
+      for (k = i + 1; k < planes.length; k++) {
+        resultCalculoDistancia += planes[i].distanciaParaOutroAviao(planes[k], parseFloat(data.distanciaMinima));
+      }
+    }
+
+    resultCalculoDistancia
+      ? (RELATORIO.append(resultCalculoDistancia))
+      : (RELATORIO.innerText = `Sem aviões próximos uns aos outros, Distancia Informada: ${data.distanciaMinima}`);
+
+    toastr.success("Calculado distancia entre aviões");
+  } catch (err) {
+    toastr.error("Erro ao calcular distancia entre aviões");
+  }
+});
+
+$('#rastreamento-colisao').submit((event) => {
+  try {
+    event.preventDefault();
+
+    RELATORIO.innerText = "";
+
+    const data = Object.fromEntries(new FormData(event.target).entries());
+    let resultCalculoDistancia = calculaRotaColisao(parseFloat(data.tempoMinimo));
+
+    RELATORIO.append(resultCalculoDistancia);
+
+    toastr.success("Calculado rotas de colisão");
+  } catch (err) {
+    toastr.error("Erro ao calcular rotas de colisão");
+  }
 });
