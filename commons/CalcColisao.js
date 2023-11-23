@@ -1,5 +1,5 @@
 function calculaRotaColisao(tempoSeguro) {
-    let xAux, yAux,xNew, yNew,d1, d2, t1, t2, tempoAbsDiferenca = 0, tan1, tan2;
+    let xAux, yAux,xNew, yNew,d1, d2, t1, t2, tempoAbsDiferenca = 0, tan1, tan2, xColisao, yColisao;
 
     let hasColAux1 = false, hasColAux2 = false;
 
@@ -16,92 +16,75 @@ function calculaRotaColisao(tempoSeguro) {
                 }
             }
 
-            tan1 = tan(planes[i].direcao);
-            tan2 = tan(planes[j].direcao);
+            tan1 = Math.tan(planes[i].direcao);
+            tan2 = Math.tan(planes[j].direcao);
 
             xAux = (tan1 * -planes[i].x) + planes[i].y;
             yAux = (tan2 * -planes[j].x) + planes[j].y;
 
             if (planes[i].direcao == 90) {
-                xCol = planes[i].x;
+                xColisao = planes[i].x;
+            } else if (planes[j].direcao == 90) {
+                xColisao = planes[j].x;
             } else {
-                if (planes[j].direcao == 90) {
-                    xCol = planes[j].x;
-                } else {
-                    xCol = ((yAux - xAux) / (tan1 + (-tan2)));
-                }
-            }
-
-            if (planes[i].direcao == 180) {
-                yCol = planes[i].y;
-            } else {
-                if (planes[j].direcao == 180) {
-                    yCol = planes[j].y;
-                } else {
-                    yCol = (tan2 * xCol + yAux);
-                }
+                xColisao = ((yAux - xAux) / (tan1 + (-tan2)));
             }
             
-            //Validacao
+            if (planes[i].direcao == 180) {
+                yColisao = planes[i].y;
+            } else if (planes[j].direcao == 180) {
+                yColisao = planes[j].y;
+            } else {
+                yColisao = (tan2 * xColisao + yAux);
+            }
+            
             xNew = planes[i].x + (0.01 * cos(planes[i].direcao));
             yNew = planes[i].y + (0.01 * sin(planes[i].direcao));
 
-
-            if (planes[i].x > xCol && xNew < planes[i].x) {
+            if (planes[i].x > xColisao && xNew < planes[i].x) {
                 hasColAux1 = true;
-            } else {
-                if (planes[i].x < xCol && xNew > planes[i].x) {
-                    hasColAux1 = true;
-                }
+            } else if (planes[i].x < xColisao && xNew > planes[i].x) {
+                hasColAux1 = true;
             }
 
-            if (planes[i].y > yCol && yNew < planes[i].y) {
+            if (planes[i].y > yColisao && yNew < planes[i].y) {
                 hasColAux1 = true;
-            } else {
-                if (planes[i].y < yCol && yNew > planes[i].y) {
-                    hasColAux1 = true;
-                }
+            } else if (planes[i].y < yColisao && yNew > planes[i].y) {
+                hasColAux1 = true;
             }
-
 
             xNew = planes[j].x + (0.01 * cos(planes[j].direcao));
             yNew = planes[j].y + (0.01 * sin(planes[j].direcao));
 
 
-            if (planes[j].x > xCol && xNew < planes[j].x) {
+            if (planes[j].x > xColisao && xNew < planes[j].x) {
                 hasColAux2 = true;
-            } else {
-                if (planes[j].x < xCol && xNew > planes[j].x) {
-                    hasColAux2 = true;
-                }
+            } else if (planes[j].x < xColisao && xNew > planes[j].x) {
+                hasColAux2 = true;
             }
 
-            if (planes[j].y > yCol && yNew < planes[j].y) {
+            if (planes[j].y > yColisao && yNew < planes[j].y) {
                 hasColAux2 = true;
-            } else {
-                if (planes[j].y < yCol && yNew > planes[j].y) {
-                    hasColAux2 = true;
-                }
+            } else if (planes[j].y < yColisao && yNew > planes[j].y) {
+                hasColAux2 = true;
             }
 
             if (!hasColAux1 || !hasColAux2) {
-
                 aviso += "\nAvião " + planes[i].id + " -> " + "Avião " + planes[j].id + " Não existe colisão \n";
                 continue;
             }
 
-            d1 = Math.hypot(xCol - planes[i].x,  yCol - planes[i].y);
-            d2 = Math.hypot(xCol - planes[j].x,  yCol - planes[j].y);
+            d1 = Math.hypot(xColisao - planes[i].x,  yColisao - planes[i].y);
+            d2 = Math.hypot(xColisao - planes[j].x,  yColisao - planes[j].y);
 
             t1 = d1 / planes[i].velocidade;
             t2 = d2 / planes[j].velocidade;
 
             tempoAbsDiferenca = (Math.abs(t1 - t2) * 60 * 60);
-            hasColision = tempoAbsDiferenca <= tempoSeguro;
 
-            if (hasColision) {
+            if (tempoAbsDiferenca <= tempoSeguro) {
                 aviso += "Avião " + planes[i].id + " -> " + "Avião " + planes[j].id 
-                        + "\nPonto de colisão: (" + xCol.toFixed(4) + ";" + yCol.toFixed(4) + ")"
+                        + "\nPonto de colisão: (" + xColisao.toFixed(4) + ";" + yColisao.toFixed(4) + ")"
                         + "\nDiferença de tempo: " + tempoAbsDiferenca.toFixed(4) + "s\n"
                         + "Avião " + planes[i].id + ": " + parseFloat((t1 * 60 * 60).toFixed(4)) + "s\n"
                         + "Avião " + planes[j].id + ": " + parseFloat((t2 * 60 * 60).toFixed(4)) + "s\n";
@@ -117,9 +100,5 @@ function calculaRotaColisao(tempoSeguro) {
 }
 
 function isAnguloIgualComColisao( airplane1, airplane2) {
-    if ((airplane1.direcao == 90 || airplane1.direcao == 270) && (airplane1.x == airplane2.x)) {
-        return true;
-    } else {
-        return (airplane1.direcao == 180 || airplane1.direcao == 0) && (airplane1.y == airplane2.y);
-    }
+    return ((airplane1.direcao == 90 || airplane1.direcao == 270) && (airplane1.x == airplane2.x)) || ((airplane1.direcao == 180 || airplane1.direcao == 0) && (airplane1.y == airplane2.y));
 }
